@@ -1,6 +1,6 @@
 import express from 'express'
-import client from "@metaverse/db/client"
-import { router } from './routes'
+
+import { router } from './routes/index.js'
 
 
 const app = express()
