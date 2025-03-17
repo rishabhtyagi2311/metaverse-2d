@@ -17,6 +17,20 @@ router.post('/signup', async (req,res)=>{
             return 
         }
         try{
+
+
+            const existUser = await client.default.user.findFirst({
+                where: {
+                    username : parsedData.data.username
+                }
+            })
+
+            if(existUser)
+            {
+                res.status(400).json({message : "User Already exists"})
+                return 
+            }
+
             const hashedPassword = await bcrypt.hash(parsedData.data.password,10)
 
             const user = await client.default.user.create({
@@ -38,13 +52,14 @@ router.post('/signup', async (req,res)=>{
         }
         catch(e)
         {
+            console.log(e)
             res.status(500).json({message: "SignUp Failed"})
             return 
         }
 })
 
 
-router.post('signin' , async (req, res)=> {
+router.post('/signin' , async (req, res)=> {
 
 
     const parsedData = signinSchema.safeParse(req.body)
@@ -70,12 +85,16 @@ router.post('signin' , async (req, res)=> {
                 res.status(200).json({
                     id: user.id,
                     username : user.username,
-                    accesstoken : accessToken, refreshToken : refreshToken })
+                    accessToken : accessToken, refreshToken : refreshToken })
                 return 
             }
 
             
             
+        }
+        else{
+            res.status(403).json({message: "Invalid Credentials"})
+            return 
         }
     }
     catch(e)
