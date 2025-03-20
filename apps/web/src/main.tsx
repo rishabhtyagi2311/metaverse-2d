@@ -1,7 +1,9 @@
 
 import { createRoot } from 'react-dom/client'
 import { Route,createBrowserRouter, createRoutesFromElements,RouterProvider } from 'react-router-dom'
- 
+import "./app.css";
+; 
+
 import App from './App.tsx'
 import Home from './components/Home.tsx'
 
